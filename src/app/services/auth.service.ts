@@ -1,32 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { LoginData } from '../interfaces/login-data.interface';
 
-// interface for response, best practice to define data
-interface AuthResponseData {
-  idToken: string,
-  email: string,
-  refreshToken: string,
-  expiresIn: string,
-  localId: string
-}
-
+// firebase
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private auth: Auth) { }
 
-  // create account in firebase
-  signup(email: string, password: string) {
-    return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[AIzaSyC2O3V7ziQ5kzDfCuu3YedcX69CemcansM]', 
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      }
-    ); 
+  // login to firebase
+  login({ email, password }: LoginData) {
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
+
+  // register user to firebase with email/pass
+  register({ email, password }: LoginData) {
+    return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+  // firebase signout
+  logout() {
+    return signOut(this.auth);
+  }
+
 }

@@ -1,13 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: "AIzaSyC2O3V7ziQ5kzDfCuu3YedcX69CemcansM",
-    authDomain: "ac-http.firebaseapp.com",
-    databaseURL: "https://ac-http-default-rtdb.firebaseio.com",
-    projectId: "ac-http",
-    storageBucket: "ac-http.appspot.com",
-    messagingSenderId: "585450045267",
-    appId: "1:585450045267:web:7ba1c376a21daba068aba6",
-    measurementId: "G-N1LB2WXHHT"
+    projectId: 'ac-auth-firebase',
+    appId: '1:135706770618:web:c975d46eb11b0c6d335683',
+    storageBucket: 'ac-auth-firebase.appspot.com',
+    apiKey: 'AIzaSyAcZtzR66yBdG7qYRFj9T3JSf9W2dzP6dE',
+    authDomain: 'ac-auth-firebase.firebaseapp.com',
+    messagingSenderId: '135706770618',
   }
 };

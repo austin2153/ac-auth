@@ -1,6 +1,14 @@
 <div class="container">
+  <!-- show spinner if loading -->
+  <div *ngIf="isLoading" style="text-align: center;">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
   <main class="form-signin">
-    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+    <!-- show form if loading is false -->
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
       <div class="form-floating">
         <input 
           type="email" 
@@ -27,7 +35,6 @@
         >
         <label for="floatingPassword">Password</label>
       </div>
-  
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me

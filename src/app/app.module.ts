@@ -13,6 +13,7 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { provideDatabase,getDatabase } from '@angular/fire/database';
     AuthComponent,
     ServersComponent,
     ServersDetailComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

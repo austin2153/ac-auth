@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginData } from '../interfaces/login-data.interface';
+import { RegisterResponse } from '../interfaces/register-response.interface';
+import { environment } from '../../environments/environment';
 
 // firebase
 import {
@@ -15,22 +17,43 @@ import {
 })
 
 export class AuthService {
-
   constructor(private http: HttpClient,private auth: Auth) { }
+  apiKey = environment.firebase.apiKey;
 
   // login to firebase
   login({ email, password }: LoginData) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
+
   // register user to firebase with email/pass
   register({ email, password }: LoginData) {
     return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+
+  registerRest(email: string, password: string) {
+    return this.http.post<RegisterResponse>(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey, 
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }
+    );
   }
 
   // firebase signout
   logout() {
     return signOut(this.auth);
   }
+
+
+
+
+
+  // rest api method
+  // https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
+  // AIzaSyAcZtzR66yBdG7qYRFj9T3JSf9W2dzP6dE
 
 }

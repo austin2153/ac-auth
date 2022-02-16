@@ -11,6 +11,8 @@ import { LoginData } from 'src/app/interfaces/login-data.interface';
 
 export class AuthComponent implements OnInit {
   isLoginMode = true;
+  isLoading = false;
+  error: any = null;
 
   @ViewChild('authForm') authForm!: NgForm;
 
@@ -19,73 +21,61 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(form: NgForm) {
+// on form submission register or signin
+onSubmit(form: NgForm) {
+  console.log(form.value);
+  const email = form.value.email;
+  const password = form.value.password;
 
-    console.log(form.value);
-    if (!form.valid) {
-      return;
-    }
-
-    const login: LoginData = {
-      email: form.value.email,
-      password: form.value.password
-    };
-
-    // send signup if login mode is selected
-    if (this.isLoginMode) {
-      // ...
-    } else {
-      this.authService
-        .register(login)
-        .catch(error => {console.log(error);})
-      form.reset();
-    }
+  // extra check in method for valid form
+  if (!form.valid) {
+    return;
   }
+
+  // show spinner if loading
+  this.isLoading = true;
+  if (this.isLoginMode) {
+    // login
+  } else {
+    // register
+    this.authService.registerRest(email, password).subscribe({
+      next: (v) => console.log(v),
+      error: (e) => {
+        console.error(e)
+        this.error = 'An error occured'
+        this.isLoading = false;
+      },
+      complete: () => {
+        console.info('complete');
+        this.isLoading = false;
+      }
+    })
+    form.reset();
+  }
+}
 
   // switch login mode, reverse boolean
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  // register(data: LoginData) {
-  //   this.authService
-  //     .register(data)
-  //     // .then(() => this.router.navigate(['/login']))
-  //     .catch((e) => console.log(e.message));
-  // }
 
-  // login(loginData: LoginData) {
-  //   this.authService
-  //     .login(loginData)
-  //     // .then(() => this.router.navigate(['/dashboard']))
-  //     .catch((e) => console.log(e.message));
-  // }
+  // ---------------------------------------------------
+
+  // register with native firebase methods
+  register(data: LoginData) {
+    this.authService
+      .register(data)
+      // .then(() => this.router.navigate(['/login']))
+      .catch((e) => console.log(e.message));
+  }
+
+  // login with native firebase methods
+  login(loginData: LoginData) {
+    this.authService
+      .login(loginData)
+      // .then(() => this.router.navigate(['/dashboard']))
+      .catch((e) => console.log(e.message));
+  }
 
 }
-
-
-// onSubmit(form: NgForm) {
-
-//   console.log(form.value);
-
-//   if (!form.valid) {
-//     return;
-//   }
-
-//   const login: LoginData = {
-//     email: form.value.email,
-//     password: form.value.password
-//   };
-
-//   // send signup is login mode is selected
-//   if (this.isLoginMode) {
-//     // ...
-//   } else {
-//     this.authService.signup(email, password).subscribe(response => {
-//       console.log(response);
-//     }, error => {
-//       console.log(error);
-//     });
-//     form.reset();
-//   }
-// }

@@ -41,9 +41,9 @@ onSubmit(form: NgForm) {
     this.authService.registerRest(email, password).subscribe({
       next: (v) => console.log(v),
       error: (e) => {
-        console.error(e)
-        this.error = 'An error occured'
-        this.isLoading = false;
+        console.log(e);
+        this.error = e; 
+        this.isLoading = false; 
       },
       complete: () => {
         console.info('complete');

@@ -36,6 +36,16 @@ onSubmit(form: NgForm) {
   this.isLoading = true;
   if (this.isLoginMode) {
     // login
+    this.authService.loginRest(email, password).subscribe({
+      next: (v) => console.log(v),
+      error: (e) => {
+        this.isLoading = false;
+      },
+      complete: () => {
+        console.info('login successful');
+        this.isLoading = false;
+      }
+    })
   } else {
     // register
     this.authService.registerRest(email, password).subscribe({
@@ -46,7 +56,7 @@ onSubmit(form: NgForm) {
         this.isLoading = false; 
       },
       complete: () => {
-        console.info('complete');
+        console.info('register successful');
         this.isLoading = false;
       }
     })

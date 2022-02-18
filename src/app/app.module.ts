@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { RealtimeDatabaseComponent } from './components/realtime-database/realtime-database.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     ServersComponent,
     ServersDetailComponent,
     NavbarComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    RealtimeDatabaseComponent
   ],
   imports: [
     BrowserModule,

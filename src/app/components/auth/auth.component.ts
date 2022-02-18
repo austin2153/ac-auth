@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoginData } from 'src/app/interfaces/login-data.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +17,7 @@ export class AuthComponent implements OnInit {
 
   @ViewChild('authForm') authForm!: NgForm;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -39,11 +40,14 @@ onSubmit(form: NgForm) {
     this.authService.loginRest(email, password).subscribe({
       next: (v) => console.log(v),
       error: (e) => {
+        this.error = e;
         this.isLoading = false;
       },
       complete: () => {
         console.info('login successful');
         this.isLoading = false;
+        this.error = null;
+        this.router.navigate(['/servers']);
       }
     })
   } else {
@@ -58,6 +62,8 @@ onSubmit(form: NgForm) {
       complete: () => {
         console.info('register successful');
         this.isLoading = false;
+        this.error = null;
+        this.router.navigate(['/servers']);
       }
     })
     form.reset();

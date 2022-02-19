@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
 // models
 import { LoginData } from '../interfaces/login-data.interface';
 import { RegisterResponse } from '../interfaces/register-response.interface';
-import { LoginResponse } from '../interfaces/login-reaponse.interface';
+import { LoginResponse } from '../interfaces/login-response.interface';
 import { User } from '../interfaces/user.interface';
 
 // firebase

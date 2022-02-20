@@ -1,16 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Planet } from '../interfaces/planet.interface';
-import { catchError, Subject, tap, map, Observable } from 'rxjs';
+import {
+  catchError,
+  Subject,
+  tap,
+  map,
+  Observable,
+  take,
+  exhaustMap,
+} from 'rxjs';
 import { throwError } from 'rxjs';
 import * as PlanetJson from '../../assets/planets.json';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatabaseService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService,
+    private router: Router
+  ) {}
   apiKey = environment.firebase.apiKey;
   planetData: Planet[] = (PlanetJson as any).default;
 
@@ -21,9 +39,14 @@ export class DatabaseService {
         'https://ac-auth-firebase-default-rtdb.firebaseio.com/planets.json',
         planet
       )
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .subscribe({
+        error: (e) => {
+          console.log(e);
+        },
+        complete: () => {
+          this.router.navigate(['/realtime-database']);
+        }
+      })
   }
 
   // get planets from database
@@ -36,7 +59,6 @@ export class DatabaseService {
         map((data) => {
           const loadedPlanets: Planet[] = [];
           for (const key in data) {
-            // console.log({ ...data[key], id: key }); //debug
             loadedPlanets.push({ ...data[key], id: key }); // add id when returned
           }
           return loadedPlanets;
@@ -47,15 +69,20 @@ export class DatabaseService {
   // add mock data planets from json
   populateDatabase() {
     for (let planet of this.planetData) {
-      console.log(planet);
       this.http
         .post(
           'https://ac-auth-firebase-default-rtdb.firebaseio.com/planets.json',
           planet
         )
-        .subscribe((data) => {
-          console.log(data);
-        });
+        .subscribe({
+          // next: (v) => console.log(v),
+          error: (e) => {
+            console.log(e);
+          },
+          complete: () => {
+            this.router.navigate(['/realtime-database']);
+          }
+        })
     }
   }
 }

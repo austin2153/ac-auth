@@ -43,7 +43,6 @@ export class RealtimeDatabaseComponent implements OnInit {
 
   onGetPlanets() {
     this.databaseService.getPlanets().subscribe((data) => {
-      this.isFetching = false;
       this.loadedPlanets = data;
     });
   }
@@ -53,7 +52,7 @@ export class RealtimeDatabaseComponent implements OnInit {
   }
 
   onPopulateDatabase() {
-    this.databaseService.populateDatabase();
+    this.databaseService.populateDatabase()
   }
 
 }

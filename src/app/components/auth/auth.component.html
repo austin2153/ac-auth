@@ -28,10 +28,10 @@
             </label>
           </div>
           <div class="d-grid gap-3">
-            <button class="w-100 btn btn-sm btn-dark" type="submit"
+            <button class="btn btn-dark" type="submit"
               [disabled]="!authForm.valid">{{ isLoginMode ? 'Login' : 'Sign Up'  }}
             </button>
-            <button class="w-100 btn btn-sm btn-dark" type="button" (click)="onSwitchMode()">Switch to
+            <button class="btn btn-dark" type="button" (click)="onSwitchMode()">Switch to
               {{ isLoginMode ? 'Sign Up' : 'Login'}}
             </button>
           </div>

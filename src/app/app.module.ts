@@ -8,13 +8,14 @@ import { ServersComponent } from './components/servers/servers.component';
 import { ServersDetailComponent } from './components/servers/servers-detail/servers-detail.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { RealtimeDatabaseComponent } from './components/realtime-database/realtime-database.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,11 @@ import { RealtimeDatabaseComponent } from './components/realtime-database/realti
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase())
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS, 
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -24,7 +24,6 @@ export class AuthComponent implements OnInit {
 
 // on form submission register or signin
 onSubmit(form: NgForm) {
-  console.log(form.value);
   const email = form.value.email;
   const password = form.value.password;
 
@@ -38,16 +37,15 @@ onSubmit(form: NgForm) {
   if (this.isLoginMode) {
     // login
     this.authService.loginRest(email, password).subscribe({
-      next: (v) => console.log(v),
+      next: (v) => console.log(v), //debug
       error: (e) => {
         this.error = e;
         this.isLoading = false;
       },
       complete: () => {
-        console.info('login successful');
         this.isLoading = false;
         this.error = null;
-        this.router.navigate(['/servers']);
+        this.router.navigate(['/realtime-database']);
       }
     })
   } else {
@@ -63,7 +61,7 @@ onSubmit(form: NgForm) {
         console.info('register successful');
         this.isLoading = false;
         this.error = null;
-        this.router.navigate(['/servers']);
+        this.router.navigate(['/realtime-database']);
       }
     })
     form.reset();

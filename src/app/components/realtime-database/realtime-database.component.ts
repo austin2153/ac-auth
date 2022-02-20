@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './realtime-database.component.html',
   styleUrls: ['./realtime-database.component.css'],
 })
+
 export class RealtimeDatabaseComponent implements OnInit {
   planetData: any = (planets as any).default;
   isFetching = false;

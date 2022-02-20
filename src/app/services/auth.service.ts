@@ -8,8 +8,6 @@ import { RegisterResponse } from '../interfaces/register-response.interface';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import { User } from '../interfaces/user.interface';
 import { Router } from '@angular/router';
-
-// firebase
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -20,21 +18,64 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
-  apiKey = environment.firebase.apiKey;
-  
+  user = new BehaviorSubject<User>(null); // user auth setup
+  private tokenExpTimer: any;
+  apiKey = environment.firebase.apiKey; // get firebase api key
+
   constructor(
-    private http: HttpClient, 
-    private auth: Auth, 
+    private http: HttpClient,
+    private auth: Auth,
     private router: Router
   ) {}
 
+  // logout of application
+  logoutRest() {
+    this.user.next(null); // set user subject to null
+    this.router.navigate(['/login']); // navigate back to login
+    localStorage.removeItem('userData'); // remove user auth info from local storage
+    if (this.tokenExpTimer) {
+      clearTimeout(this.tokenExpTimer); // clear timer
+    }
+    this.tokenExpTimer = null; // set back to null after clearing
+  }
 
-  logoutRest(){
-    this.user.next(null);
-    this.router.navigate(['/login']);
+  autoLogout(expDuration: number) {
+    this.tokenExpTimer = setTimeout(() => { // set expire timer
+      this.logoutRest(); // logout
+    }, expDuration);
+  }
+
+  // run in ngOnInit in app.component.ts
+  autoLogin() {
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData')); // get local user auth info
+
+    // exit on no local storage
+    if (!userData) {
+      return;
+    }
+
+    // add storage data to User model
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData._token,
+      new Date(userData._tokenExpirationDate)
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser); // set user behavior subject
+      // get expiration by calculating future date - current date
+      const expDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expDuration); // logout if expired
+    }
   }
 
   // register user with http client
@@ -87,8 +128,17 @@ export class AuthService {
       );
   }
 
-  // handle errors for login/register calls
-  private handleRestError(e: HttpErrorResponse) {
+  // manage auth for firebase rest calls
+  handleAuth(email: string, userId: string, token: string, expiresIn: number) {
+    const expDate = new Date(new Date().getTime() + expiresIn * 1000); // get expiration, convert from secs to ms
+    const user = new User(email, userId, token, expDate);
+    this.user.next(user); // set emmiter for user
+    this.autoLogout(expiresIn * 1000); // autologout convert seconds to ms
+    localStorage.setItem('userData', JSON.stringify(user)); // add user data to local storage
+  }
+
+  // handle errors for authentication
+  handleRestError(e: HttpErrorResponse) {
     let error = 'An error occured';
     // return generic error message if return format is unexpected
     if (!e.error || !e.error.error) {
@@ -117,26 +167,10 @@ export class AuthService {
     return throwError(() => new Error(error));
   }
 
-  private handleAuth(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expDate = new Date(new Date().getTime() + expiresIn * 1000); // get expiration
-    // create new user
-    const user = new User(
-      email, 
-      userId, 
-      token, 
-      expDate
-    ); 
-    this.user.next(user); // emit logged in user    
-    // console.log(expDate); // debug
-    // console.log(JSON.stringify(user, null, 2)); // debug
-  }
-
   // ----------------------------------------------------
+
+  // https://betterprogramming.pub/angular-13-firebase-authentication-tutorial-with-angularfire-7-23dc8cee42c4
+  // Angular 13 Firebase Authentication Tutorial With AngularFire 7
 
   // login to firebase
   login({ email, password }: LoginData) {

@@ -16,6 +16,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { RealtimeDatabaseComponent } from './components/realtime-database/realtime-database.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { PlanetFormComponent } from './components/planet-form/planet-form.component';
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PlanetFormComponent } from './components/planet-form/planet-form.compon
     NavbarComponent,
     LoadingSpinnerComponent,
     RealtimeDatabaseComponent,
-    PlanetFormComponent
+    PlanetFormComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

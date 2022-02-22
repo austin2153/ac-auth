@@ -73,6 +73,9 @@ onSubmit(form: NgForm) {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  onHandleError(){
+    this.error = null; // reset error back to null
+  }
 
   // ---------------------------------------------------
 

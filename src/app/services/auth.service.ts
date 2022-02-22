@@ -40,7 +40,7 @@ export class AuthService {
     this.tokenExpTimer = null; // set back to null after clearing
   }
 
-  autoLogout(expDuration: number) {
+  autoLogout(expDuration: number) { // amount in ms
     this.tokenExpTimer = setTimeout(() => { // set expire timer
       this.logoutRest(); // logout
     }, expDuration);
@@ -67,8 +67,9 @@ export class AuthService {
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
-
-    if (loadedUser.token) {
+    
+    
+    if (loadedUser.token) { // if token exists in local storage
       this.user.next(loadedUser); // set user behavior subject
       // get expiration by calculating future date - current date
       const expDuration =
@@ -165,6 +166,10 @@ export class AuthService {
         break;
     }
     return throwError(() => new Error(error));
+  }
+
+  onHandleError(){
+    
   }
 
   // ----------------------------------------------------

@@ -1,0 +1,50 @@
+<form [formGroup]="planetForm" (ngSubmit)="onSavePlanet()">
+  <div class="mb-3">
+    <label for="position" class="form-label">Position</label>
+    <input
+      type="text"
+      id="position"
+      formControlName="position"
+      class="form-control"
+      placeholder="e.g. 1"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="image" class="form-label">Image</label>
+    <input
+      type="text"
+      id="image"
+      formControlName="image"
+      class="form-control"
+      placeholder="e.g. http://space-facts.com/wp-content/uploads/mercury-transparent.png"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="velocity" class="form-label">Velocity</label>
+    <input
+      type="text"
+      id="velocity"
+      formControlName="velocity"
+      class="form-control"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="distance" class="form-label">Distance</label>
+    <input
+      type="text"
+      id="distance"
+      formControlName="distance"
+      class="form-control"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input
+      type="text"
+      id="description"
+      formControlName="description"
+      class="form-control"
+    />
+  </div>
+  <button class="btn btn-dark" type="submit">Add Planet</button>
+</form>

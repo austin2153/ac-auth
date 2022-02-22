@@ -5,6 +5,11 @@
       <p class="fs-3 text-start">Firebase Realtime Database</p>
       <p>Store and sync data with our NoSQL cloud database. Data is synced across all clients in realtime, and remains available when your app goes offline.</p>
       <p>The <a href="https://firebase.google.com/docs/database" class="link-dark">Firebase Realtime Database</a> is a cloud-hosted database. Data is stored as JSON and synchronized in realtime to every connected client. When you build cross-platform apps with our Apple platforms, Android, and JavaScript SDKs, all of your clients share one Realtime Database instance and automatically receive updates with the newest data</p>
+      <hr class="dashed">
+      <br>
+      <p class="fs-4 text-start">Add a Planet</p>
+      <app-planet-form></app-planet-form>
+      <br>
       <button type="button" 
         class="btn btn-dark" 
         data-bs-toggle="tooltip" 
@@ -12,15 +17,6 @@
         title="Populate with solar system planets"
         (click)="onPopulateDatabase()">
         Populate Database
-      </button>
-      <button 
-        type="button" 
-        class="btn btn-dark"
-        data-bs-toggle="tooltip" 
-        data-bs-placement="top" 
-        title="Add mock data to planet list"
-        (click)="onAddPlanet()">
-        Add Planet
       </button>
       <br>
       <br>

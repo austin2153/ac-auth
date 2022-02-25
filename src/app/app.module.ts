@@ -2,33 +2,34 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthComponent } from './components/auth/auth.component';
-import { ServersComponent } from './components/servers/servers.component';
-import { ServersDetailComponent } from './components/servers/servers-detail/servers-detail.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+
+// environment
 import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
-import { provideDatabase,getDatabase } from '@angular/fire/database';
+
+// components
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { AuthComponent } from './components/auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-import { RealtimeDatabaseComponent } from './components/realtime-database/realtime-database.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { PlanetFormComponent } from './components/planet-form/planet-form.component';
 import { AlertComponent } from './shared/alert/alert.component';
+import { RealtimeDatabaseModule } from './modules/realtime-database/realtime-database.module';
+import { FirestoreDatabaseComponent } from './components/firestore-database/firestore-database.component';
+
+// firebase
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { provideAuth,getAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    ServersComponent,
-    ServersDetailComponent,
     NavbarComponent,
     LoadingSpinnerComponent,
-    RealtimeDatabaseComponent,
-    PlanetFormComponent,
-    AlertComponent
+    AlertComponent,
+    FirestoreDatabaseComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import { AlertComponent } from './shared/alert/alert.component';
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase())
+    provideDatabase(() => getDatabase()),
+    RealtimeDatabaseModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, 

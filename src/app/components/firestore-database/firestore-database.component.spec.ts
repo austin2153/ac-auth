@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServersComponent } from './servers.component';
+import { FirestoreDatabaseComponent } from './firestore-database.component';
 
-describe('ServersComponent', () => {
-  let component: ServersComponent;
-  let fixture: ComponentFixture<ServersComponent>;
+describe('FirestoreDatabaseComponent', () => {
+  let component: FirestoreDatabaseComponent;
+  let fixture: ComponentFixture<FirestoreDatabaseComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ServersComponent ]
+      declarations: [ FirestoreDatabaseComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServersComponent);
+    fixture = TestBed.createComponent(FirestoreDatabaseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

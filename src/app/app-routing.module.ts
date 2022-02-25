@@ -1,19 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
-import { RealtimeDatabaseComponent } from './components/realtime-database/realtime-database.component';
-import { ServersComponent } from './components/servers/servers.component';
-import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: AuthComponent },
-  { path: 'servers', canActivate: [AuthGuardService], component: ServersComponent },
-  { path: 'realtime-database', canActivate: [AuthGuardService], component: RealtimeDatabaseComponent }
+  {
+    path: 'realtime-database',
+    loadChildren: () =>
+      import('./modules/realtime-database/realtime-database.module').then(
+        (m) => m.RealtimeDatabaseModule
+      ),
+  },
+  {
+    path: 'firestore-database',
+    loadChildren: () =>
+      import('./modules/firestore-database/firestore-database.module').then(
+        (m) => m.FirestoreDatabaseModule
+      ),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
